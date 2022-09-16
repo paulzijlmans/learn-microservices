@@ -2,7 +2,9 @@ package microservices.book.multiplication.challenge;
 
 import java.util.Random;
 import java.util.random.RandomGenerator;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ChallengeGeneratorServiceImpl implements ChallengeGeneratorService {
 
     private final static int MINIMUM_FACTOR = 11;

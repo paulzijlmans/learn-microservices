@@ -9,10 +9,10 @@ public class ChallengeServiceImpl implements ChallengeService {
     @Override
     public ChallengeAttempt verifyAttempt(ChallengeAttemptDTO attemptDTO) {
         boolean isCorrect =
-            attemptDTO.getGuess() == attemptDTO.getFactorA() * attemptDTO.getFactorB();
-        User user = new User(null, attemptDTO.getUserAlias());
+            attemptDTO.guess() == attemptDTO.factorA() * attemptDTO.factorB();
+        User user = new User(null, attemptDTO.userAlias());
 
-        return new ChallengeAttempt(null, user, attemptDTO.getFactorA(),
-            attemptDTO.getFactorB(), attemptDTO.getGuess(), isCorrect);
+        return new ChallengeAttempt(null, user, attemptDTO.factorA(),
+            attemptDTO.factorB(), attemptDTO.guess(), isCorrect);
     }
 }
