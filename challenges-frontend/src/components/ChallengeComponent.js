@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
-import ApiClient from '../services/ApiClient';
+import { challenge, sendGuess } from '../services/ApiClient';
 
 export default function ChallengeComponent() {
   const [factorA, setFactorA] = useState('');
@@ -11,7 +10,7 @@ export default function ChallengeComponent() {
 
   useEffect(() => {
     async function getChallenge() {
-      const res = await ApiClient.challenge();
+      const res = await challenge();
       if (res.ok) {
         const json = await res.json();
         setFactorA(json.factorA);
@@ -33,7 +32,7 @@ export default function ChallengeComponent() {
 
   async function handleSubmitResult(event) {
     event.preventDefault();
-    const res = await ApiClient.sendGuess(user, +factorA, +factorB, guess);
+    const res = await sendGuess(user, +factorA, +factorB, guess);
     if (res.ok) {
       const json = await res.json();
       if (json.correct) {
