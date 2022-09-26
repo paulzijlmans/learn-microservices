@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { challenge, sendGuess } from '../services/ApiClient';
+import { challenge, getAttempts, sendGuess } from '../services/ApiClient';
+import LastAttemptsComponent from './LastAttemptsComponent';
 
 export default function ChallengeComponent() {
   const [factorA, setFactorA] = useState('');
@@ -7,19 +8,10 @@ export default function ChallengeComponent() {
   const [user, setUser] = useState('');
   const [message, setMessage] = useState('');
   const [guess, setGuess] = useState(0);
+  const [lastAttempts, setLastAttempts] = useState([]);
 
   useEffect(() => {
-    async function getChallenge() {
-      const res = await challenge();
-      if (res.ok) {
-        const json = await res.json();
-        setFactorA(json.factorA);
-        setFactorB(json.factorB);
-      } else {
-        setMessage("Can't reach the server");
-      }
-    }
-    getChallenge();
+    refreshChallenge();
   }, []);
 
   function handleUserChange(event) {
@@ -28,6 +20,17 @@ export default function ChallengeComponent() {
 
   function handleGuessChange(event) {
     setGuess(event.target.value);
+  }
+
+  async function refreshChallenge() {
+    const res = await challenge();
+    if (res.ok) {
+      const json = await res.json();
+      setFactorA(json.factorA);
+      setFactorB(json.factorB);
+    } else {
+      setMessage("Can't reach the server");
+    }
   }
 
   async function handleSubmitResult(event) {
@@ -42,18 +45,32 @@ export default function ChallengeComponent() {
           `Oops! Your guess ${json.resultAttempt} is wrong, but keep playing!`
         );
       }
+      updateLastAttempts(user);
+      refreshChallenge();
     } else {
       setMessage('Error: server error or not available');
     }
   }
 
+  async function updateLastAttempts(userAlias) {
+    const res = await getAttempts(userAlias);
+    if (res.ok) {
+      let attempts = [];
+      const data = await res.json();
+      data.forEach((item) => {
+        attempts.push(item);
+      });
+      setLastAttempts(attempts);
+    }
+  }
+
   return (
-    <div>
+    <div className='display-column'>
       <div>
         <h3>Your new Challenge is</h3>
-        <h1>
+        <div className='challenge'>
           {factorA} x {factorB}
-        </h1>
+        </div>
       </div>
       <form onSubmit={handleSubmitResult}>
         <label>
@@ -81,6 +98,9 @@ export default function ChallengeComponent() {
         <input type='submit' value='Submit' />
       </form>
       <h4>{message}</h4>
+      {lastAttempts.length > 0 && (
+        <LastAttemptsComponent lastAttempts={lastAttempts} />
+      )}
     </div>
   );
 }
