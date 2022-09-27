@@ -7,14 +7,14 @@ import lombok.With;
 
 @Value
 @AllArgsConstructor
-public class LeaderBordRow {
+public class LeaderBoardRow {
 
     Long userId;
     Long totalScore;
     @With
     List<String> badges;
 
-    public LeaderBordRow(final Long userId, final Long totalScore) {
+    public LeaderBoardRow(final Long userId, final Long totalScore) {
         this.userId = userId;
         this.totalScore = totalScore;
         this.badges = List.of();
