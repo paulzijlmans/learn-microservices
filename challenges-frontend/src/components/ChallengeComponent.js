@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { challenge, getAttempts, sendGuess } from '../services/ApiClient';
+import { getChallenge, getAttempts, sendGuess } from '../services/ChallengesApiClient';
 import LastAttemptsComponent from './LastAttemptsComponent';
+import LeaderBoardComponent from './LeaderBoardComponent';
 
 export default function ChallengeComponent() {
   const [factorA, setFactorA] = useState('');
@@ -23,7 +24,7 @@ export default function ChallengeComponent() {
   }
 
   async function refreshChallenge() {
-    const res = await challenge();
+    const res = await getChallenge();
     if (res.ok) {
       const json = await res.json();
       setFactorA(json.factorA);
@@ -101,6 +102,7 @@ export default function ChallengeComponent() {
       {lastAttempts.length > 0 && (
         <LastAttemptsComponent lastAttempts={lastAttempts} />
       )}
+      <LeaderBoardComponent />
     </div>
   );
 }
