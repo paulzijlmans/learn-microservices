@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getChallenge, getAttempts, sendGuess } from '../services/ChallengesApiClient';
+import { getChallenge, getAttempts, sendGuess } from '../services/ApiClient';
 import LastAttemptsComponent from './LastAttemptsComponent';
 import LeaderBoardComponent from './LeaderBoardComponent';
 

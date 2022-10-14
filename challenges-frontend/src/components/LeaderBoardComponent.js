@@ -1,12 +1,41 @@
 import React, { useEffect, useState } from 'react';
-import { getUsers } from '../services/ChallengesApiClient';
-import { getLeaderBoard } from '../services/GameApiClient';
+import { getUsers, getLeaderBoard } from '../services/ApiClient';
 
 export default function LeaderBoardComponent() {
   const [leaderBoard, setLeaderBoard] = useState([]);
   const [serverError, setServerError] = useState(false);
 
   useEffect(() => {
+    async function refreshLeaderBoard() {
+      try {
+        const lbData = await getLeaderBoardData();
+        let userIds = lbData.map((row) => row.userId);
+  
+        if(userIds.length > 0) {
+          try {
+            const data = await getUserAliasData(userIds);
+  
+            // build a map of id -> alias
+            let userMap = new Map();
+            data.forEach((idAlias) => {
+              userMap.set(idAlias.id, idAlias.alias);
+            });
+  
+            // add a property to existing lb data
+            lbData.forEach((row) => (row["alias"] = userMap.get(row.userId)));
+            updateLeaderBoard(lbData);
+          } catch (reason) {
+            console.log("Error mapping user ids", reason);
+            updateLeaderBoard();
+          }
+        }
+      } catch (reason) {
+        setServerError(true);
+        console.log("Gamification server error", reason);
+      } 
+    }
+
+    refreshLeaderBoard();
     const interval = setInterval(() => {
       refreshLeaderBoard();
     }, 5000);
@@ -34,35 +63,6 @@ export default function LeaderBoardComponent() {
   function updateLeaderBoard(lb) {
     setLeaderBoard(lb);
     setServerError(false);
-  }
-
-  async function refreshLeaderBoard() {
-    try {
-      const lbData = await getLeaderBoardData();
-      let userIds = lbData.map((row) => row.userId);
-
-      if(userIds.length > 0) {
-        try {
-          const data = await getUserAliasData(userIds);
-
-          // build a map of id -> alias
-          let userMap = new Map();
-          data.forEach((idAlias) => {
-            userMap.set(idAlias.id, idAlias.alias);
-          });
-
-          // add a property to existing lb data
-          lbData.forEach((row) => (row["alias"] = userMap.get(row.userId)));
-          updateLeaderBoard(lbData);
-        } catch (reason) {
-          console.log("Error mapping user ids", reason);
-          updateLeaderBoard();
-        }
-      }
-    } catch (reason) {
-      setServerError(true);
-      console.log("Gamification server error", reason);
-    } 
   }
 
   if (serverError) {
