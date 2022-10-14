@@ -1,0 +1,11 @@
+#!/bin/sh
+curl -X POST http://localhost:8080/attempts -H "Content-Type: application/json" -d '{"factorA": 15, "factorB": 20, "userAlias": "test-rmq-down", "guess": 300}'
+curl -X POST http://localhost:8080/attempts -H "Content-Type: application/json" -d '{"factorA": 15, "factorB": 20, "userAlias": "test-rmq-down", "guess": 300}'
+curl -X POST http://localhost:8080/attempts -H "Content-Type: application/json" -d '{"factorA": 15, "factorB": 20, "userAlias": "test-rmq-down", "guess": 300}'
+curl -X POST http://localhost:8080/attempts -H "Content-Type: application/json" -d '{"factorA": 15, "factorB": 20, "userAlias": "test-rmq-down", "guess": 300}'
+curl -X POST http://localhost:8080/attempts -H "Content-Type: application/json" -d '{"factorA": 15, "factorB": 20, "userAlias": "test-rmq-down", "guess": 300}'
+curl -X POST http://localhost:8080/attempts -H "Content-Type: application/json" -d '{"factorA": 15, "factorB": 20, "userAlias": "test-rmq-down", "guess": 300}'
+curl -X POST http://localhost:8080/attempts -H "Content-Type: application/json" -d '{"factorA": 15, "factorB": 20, "userAlias": "test-rmq-down", "guess": 300}'
+curl -X POST http://localhost:8080/attempts -H "Content-Type: application/json" -d '{"factorA": 15, "factorB": 20, "userAlias": "test-rmq-down", "guess": 300}'
+curl -X POST http://localhost:8080/attempts -H "Content-Type: application/json" -d '{"factorA": 15, "factorB": 20, "userAlias": "test-rmq-down", "guess": 300}'
+curl -X POST http://localhost:8080/attempts -H "Content-Type: application/json" -d '{"factorA": 15, "factorB": 20, "userAlias": "test-rmq-down", "guess": 300}'
