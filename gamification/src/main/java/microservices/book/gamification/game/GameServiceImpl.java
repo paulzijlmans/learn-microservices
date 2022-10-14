@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import microservices.book.gamification.challenge.ChallengeSolvedDTO;
+import microservices.book.gamification.challenge.ChallengeSolvedEvent;
 import microservices.book.gamification.game.badgeprocessors.BadgeProcessor;
 import microservices.book.gamification.game.domain.BadgeCard;
 import microservices.book.gamification.game.domain.BadgeType;
@@ -24,7 +24,7 @@ public class GameServiceImpl implements GameService {
     private final List<BadgeProcessor> badgeProcessors;
 
     @Override
-    public GameResult newAttemptForUser(ChallengeSolvedDTO challenge) {
+    public GameResult newAttemptForUser(ChallengeSolvedEvent challenge) {
         if (challenge.correct()) {
             ScoreCard scoreCard = new ScoreCard(challenge.userId(),
                 challenge.attemptId());
@@ -35,7 +35,7 @@ public class GameServiceImpl implements GameService {
             List<BadgeCard> badgeCards = processForBadges(challenge);
             return new GameResult(scoreCard.getScore(),
                 badgeCards.stream().map(BadgeCard::getBadgeType)
-                    .collect(Collectors.toList()));
+                    .toList());
         } else {
             log.info("Attempt id {} is not correct. " +
                     "User {} does not get score.",
@@ -46,11 +46,11 @@ public class GameServiceImpl implements GameService {
     }
 
     /**
-     * Checks the total score and the different score cards obtained
+     * Checks the total score and the different scorecards obtained
      * to give new badges in case their conditions are met.
      */
     private List<BadgeCard> processForBadges(
-        final ChallengeSolvedDTO solvedChallenge) {
+        final ChallengeSolvedEvent solvedChallenge) {
         Optional<Integer> optTotalScore = scoreRepository.
             getTotalScoreForUser(solvedChallenge.userId());
         if (optTotalScore.isEmpty()) return Collections.emptyList();
@@ -75,7 +75,7 @@ public class GameServiceImpl implements GameService {
             .map(badgeType ->
                 new BadgeCard(solvedChallenge.userId(), badgeType)
             )
-            .collect(Collectors.toList());
+            .toList();
 
         badgeRepository.saveAll(newBadgeCards);
 

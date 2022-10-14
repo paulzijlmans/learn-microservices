@@ -6,7 +6,7 @@ import static org.mockito.Mockito.verify;
 
 import java.util.List;
 import java.util.Optional;
-import microservices.book.gamification.challenge.ChallengeSolvedDTO;
+import microservices.book.gamification.challenge.ChallengeSolvedEvent;
 import microservices.book.gamification.game.GameService.GameResult;
 import microservices.book.gamification.game.badgeprocessors.BadgeProcessor;
 import microservices.book.gamification.game.domain.BadgeCard;
@@ -39,10 +39,10 @@ class GameServiceImplTest {
     }
 
     @Test
-    public void processCorrectAttemptTest() {
+    void processCorrectAttemptTest() {
         long attemptId = 1L;
         long userId = 1L;
-        ChallengeSolvedDTO attempt = new ChallengeSolvedDTO(attemptId, true, 20, 70, userId,
+        ChallengeSolvedEvent attempt = new ChallengeSolvedEvent(attemptId, true, 20, 70, userId,
             "john");
         ScoreCard scoreCard = new ScoreCard(userId, attemptId);
         given(scoreRepository.getTotalScoreForUser(userId))
@@ -65,9 +65,9 @@ class GameServiceImplTest {
     }
 
     @Test
-    public void processWrongAttemptTest() {
+    void processWrongAttemptTest() {
         GameResult gameResult = gameService.newAttemptForUser(
-            new ChallengeSolvedDTO(10L, false, 10, 10, 1L, "john"));
+            new ChallengeSolvedEvent(10L, false, 10, 10, 1L, "john"));
 
         then(gameResult).isEqualTo(new GameResult(0, List.of()));
     }
