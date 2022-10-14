@@ -1,0 +1,2 @@
+#!/bin/sh
+docker run -d -e 'CONSUL_HTTP_ADDR=consul:8500' -p 8500:8500 -p 8600:8600/udp --name=consul consul:1.9 agent -dev -node=learnmicro -client=0.0.0.0 -log-level=INFO
