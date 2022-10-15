@@ -1,0 +1,4 @@
+#!/bin/sh
+#brew tap hashicorp/tap
+#brew install hashicorp/tap/consul
+consul agent -node=learnmicro -dev
