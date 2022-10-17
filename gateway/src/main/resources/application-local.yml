@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    consul:
+      discovery:
+        # Added because local ip address does not work locally on laptop
+        health-check-url: http://localhost:${server.port}/actuator/health
+        prefer-ip-address: true
+        ip-address: 127.0.0.1

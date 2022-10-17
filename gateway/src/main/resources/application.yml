@@ -16,10 +16,6 @@ spring:
       discovery:
         # Get only services that are passing the health check
         query-passing: true
-        # Added because local ip address does not work locally on laptop
-        health-check-url: http://localhost:${server.port}/actuator/health
-        prefer-ip-address: true
-        ip-address: 127.0.0.1
       config:
         data-key: application.yml
         prefixes:
