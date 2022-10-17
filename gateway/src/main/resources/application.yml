@@ -14,6 +14,10 @@ spring:
       discovery:
         # Get only services that are passing the health check
         query-passing: true
+        # Added because local ip address does not work locally on laptop
+        health-check-url: http://localhost:${server.port}/actuator/health
+        prefer-ip-address: true
+        ip-address: 127.0.0.1
     gateway:
       routes:
         - id: multiplication
@@ -43,3 +47,4 @@ spring:
 #logging:
 #  level:
 #    org.springframework.cloud.gateway.handler.predicate: trace
+
