@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: gateway
+  config:
+    import: "optional:consul:"
   cloud:
     loadbalancer:
       ribbon:
@@ -18,6 +20,12 @@ spring:
         health-check-url: http://localhost:${server.port}/actuator/health
         prefer-ip-address: true
         ip-address: 127.0.0.1
+      config:
+        data-key: application.yml
+        prefixes:
+          - config
+        format: yaml
+        default-context: defaults
     gateway:
       routes:
         - id: multiplication
@@ -48,3 +56,6 @@ spring:
 #  level:
 #    org.springframework.cloud.gateway.handler.predicate: trace
 
+logging:
+  level:
+    org.springframework.amqp.rabbit.connection.CachingConnectionFactory: WARN
